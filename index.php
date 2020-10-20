@@ -3,26 +3,29 @@
 // Sekcja 10, film nr 88
 declare(strict_types=1);
 
-namespace App;
+//namespace App;
 
+spl_autoload_register(function (string $classNamespace) {
+    $path = str_replace(['\\', 'App/'], ['/', ''], $classNamespace);
+    $path = "src/$path.php";
+    require_once($path);
+});
+    
 require_once("src/Utils/debug.php");
-require_once("src/Controller/NoteController.php");
-require_once("src/Request.php");
-//require_once("src/Exception/AppException.php");
+$configuration = require_once('config/config.php');
+
 
 use App\Exception\AppException;
 use App\Exception\ConfigurationException;
-use Throwable;
+//use Throwable;
+use App\Controller\AbstractController;
+use App\Controller\NoteController;
 use App\Request;
 
 //error_reporting(0);
 //ini_set('display_errors', '0'); 
 
-$configuration = require_once('config/config.php');
-
 $request = new Request($_GET, $_POST);
-
-//dump($request);
 
 try {
     AbstractController::initConfiguration($configuration);
