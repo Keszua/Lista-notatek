@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App;
 
 require_once("src/Utils/debug.php");
-require_once("src/Controller.php");
+require_once("src/NoteController.php");
 require_once("src/Request.php");
 //require_once("src/Exception/AppException.php");
 
@@ -25,12 +25,8 @@ $request = new Request($_GET, $_POST);
 //dump($request);
 
 try {
-    Controller::initConfiguration($configuration);
-   
-    //$controller = new Controller($request);
-    //$controller->run();
-    //to co wyżej, zapisane w 1 linijce:
-    (new Controller($request))->run();
+    AbstractController::initConfiguration($configuration);
+    (new NoteController($request))->run();
 } catch(ConfigurationException $e) {
     //Logger::log($e->getTraceAsString());
     //mail('xxx@xxx.com', 'Error', $e->getMessage());
