@@ -25,6 +25,9 @@
                         case 'created':
                             echo 'Notatka została utworzona';
                             break;
+                        case 'edit':
+                            echo 'Notatka została zaktualizowana';
+                            break;
                         default:
                             break;
                     }
@@ -50,11 +53,11 @@
                 <tbody>
                     <?php foreach($params['notes'] ?? [] as $note): ?>
                         <tr>
-                            <td><?= $note['Id'] ;  ?></td>
+                            <td><?= $note['id'] ;  ?></td>
                             <td><?= $note['title']   ?></td>
                             <td><?= $note['created']   ?></td>
                             <td>
-                                <a href="/?action=show&id=<?= $note['Id'] ?>">
+                                <a href="/?action=show&id=<?= $note['id'] ?>">
                                     <button>Pokaż</button>
                                 </a>
                             </td>

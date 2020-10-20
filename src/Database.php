@@ -34,7 +34,7 @@ class Database
     public function getNote(int $id): array 
     {
         try {
-            $query = "SELECT Id, title, description, created FROM notes WHERE Id = $id";
+            $query = "SELECT id, title, description, created FROM notes WHERE id = $id";
             $result = $this->conn->query($query);
             $note = $result->fetch(PDO::FETCH_ASSOC);
         } catch (Throwable $e) {
@@ -51,7 +51,7 @@ class Database
     public function getNotes(): array 
     {
         try {
-            $query = "SELECT Id, title, description, created FROM notes";
+            $query = "SELECT id, title, description, created FROM notes";
             $result = $this->conn->query($query, PDO::FETCH_ASSOC);
             return $result->fetchAll();
         } catch (Throwable $e) {
@@ -74,10 +74,30 @@ class Database
             
             $this->conn->exec($query); //wysłanie polecenia zapisania
         } catch (Throwable $e) {
-            throw new StorageException('Nie udało się utworzyć nowej notatki!', 400);
+            throw new StorageException('Nie udało się utworzyć nowej notatki!', 400, $e);
         }
     }
     
+    public function editNote(int $id, array $data): void
+    {
+        try {
+            $title = $this->conn->quote($data['title']);
+            $description = $this->conn->quote($data['description']);
+
+            $query = "
+                UPDATE notes
+                SET title = $title, description = $description
+                WHERE id = $id
+            ";
+
+            $this->conn->exec($query);
+        } catch (Throwable $e) {
+            throw StorageException('Nie udało się edytować notatki!', 400);
+        }
+
+
+    }
+
     private function createConn(array $config): void
     {
         $dsn = "mysql:dbname={$config['database']};host={$config['host']}";

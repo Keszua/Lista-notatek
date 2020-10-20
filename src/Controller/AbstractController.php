@@ -49,7 +49,6 @@ abstract class AbstractController
         
         $action = $this->action() . 'Action';
         if(!method_exists($this, $action)) {
-            echo 'ISTNIEJE';
             $action = self::DEFAULT_ACTION . 'Action';
         }
 
@@ -63,6 +62,26 @@ abstract class AbstractController
         return $this->request->getParam('action', self::DEFAULT_ACTION);
     }
 
+    protected function redirect(string $to, array $params = []): void
+    {
+        $location = $to;
+        if(count($params)) {
+            $queryParams = [];
+            foreach($params as $key => $value) {
+                $queryParams[] = urlencode($key).'='.urlencode($value);
+            }
+    
+            $queryParams = implode('&', $queryParams);
+            $location .= '?'.$queryParams;
+        }
+
+        //$params = implode('&', $params); //funcka "sklejająca"
+
+        var_dump($location);
+
+        header("Location: $location");
+        exit;
+    }
 
 
 }
