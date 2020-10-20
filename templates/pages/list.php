@@ -50,11 +50,11 @@
                 <tbody>
                     <?php foreach($params['notes'] ?? [] as $note): ?>
                         <tr>
-                            <td><?= (int) $note['Id'] ;  ?></td>
-                            <td><?= htmlentities($note['title'])   ?></td>
-                            <td><?= htmlentities($note['created'])   ?></td>
+                            <td><?= $note['Id'] ;  ?></td>
+                            <td><?= $note['title']   ?></td>
+                            <td><?= $note['created']   ?></td>
                             <td>
-                                <a href="/?action=show&id=<?= (int) $note['Id'] ?>">
+                                <a href="/?action=show&id=<?= $note['Id'] ?>">
                                     <button>Pokaż</button>
                                 </a>
                             </td>
