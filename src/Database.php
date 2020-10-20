@@ -9,6 +9,7 @@ require_once('Exception/NotFoundException.php');
 
 use App\Exception\StorageException;
 use App\Exception\ConfigurationException;
+use App\Exception\NotFoundException;
 use PDO;
 use PDOException;
 //use Exception;
@@ -44,6 +45,7 @@ class Database
         }
 
         if(!$note) {
+            throw new NotFoundException("Nie ma notatki o id: $id");
             exit('Nie a takiej notatki');
         }
         return $note;

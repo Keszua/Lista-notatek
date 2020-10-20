@@ -3,6 +3,23 @@
     <section>
         <div class='message'>
             <?php 
+                if(!empty($params['error'])) {
+                    switch($params['error']) {
+                        case 'noteNotFound':
+                            echo 'Notatka nie została znaleziona';
+                            break;
+                        case 'missingNoteId':
+                            echo 'Niepoprwny identyfikator notatki';
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            ?>
+        </div>
+
+        <div class='message'>
+            <?php 
                 if(!empty($params['before'])) {
                     switch($params['before']) {
                         case 'created':
@@ -37,7 +54,9 @@
                             <td><?= htmlentities($note['title'])   ?></td>
                             <td><?= htmlentities($note['created'])   ?></td>
                             <td>
-                                <a href="/?action=show&id=<?= (int) $note['Id'] ?>">Pokaż</a>
+                                <a href="/?action=show&id=<?= (int) $note['Id'] ?>">
+                                    <button>Pokaż</button>
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

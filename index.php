@@ -2,25 +2,27 @@
 //Projekt1 na podstwie filmu Programowanie w PHP 7.4 od podstaw - teoria i praktyka
 // Sekcja 10, film nr 88
 declare(strict_types=1);
+
 namespace App;
+
+require_once("src/Utils/debug.php");
+require_once("src/Controller.php");
+require_once("src/Request.php");
+//require_once("src/Exception/AppException.php");
 
 use App\Exception\AppException;
 use App\Exception\ConfigurationException;
 use Throwable;
-
-require_once("src/Utils/debug.php");
-require_once("src/Controller.php");
-//require_once("src/Exception/AppException.php");
+use App\Request;
 
 //error_reporting(0);
 //ini_set('display_errors', '0'); 
 
 $configuration = require_once('config/config.php');
 
-$request = [
-    'get' => $_GET,
-    'post' => $_POST
-];
+$request = new Request($_GET, $_POST);
+
+//dump($request);
 
 try {
     Controller::initConfiguration($configuration);
