@@ -4,31 +4,48 @@
 declare(strict_types=1);
 namespace App;
 
+use App\Exception\AppException;
+use App\Exception\ConfigurationException;
+use Throwable;
+
 require_once("src/Utils/debug.php");
-require_once("src/View.php");
+require_once("src/Controller.php");
+//require_once("src/Exception/AppException.php");
 
 //error_reporting(0);
 //ini_set('display_errors', '0'); 
 
+$configuration = require_once('config/config.php');
 
-const DEFAULT_ACTION = 'list';
+$request = [
+    'get' => $_GET,
+    'post' => $_POST
+];
 
-$action = $_GET['action'] ?? DEFAULT_ACTION;
-
-$view = new View();
-
-$viewParams = [];
-if($action === 'create') {
-    $page = 'create';
-    $viewParams['resultCreate'] = 'Udało się';
-} else {
-    $page = 'list';
-    $viewParams['resultList'] = "Wyświetlamy notatki";
+try {
+    Controller::initConfiguration($configuration);
+   
+    //$controller = new Controller($request);
+    //$controller->run();
+    //to co wyżej, zapisane w 1 linijce:
+    (new Controller($request))->run();
+} catch(ConfigurationException $e) {
+    //Logger::log($e->getTraceAsString());
+    //mail('xxx@xxx.com', 'Error', $e->getMessage());
+    echo "<h1>Wystąpił błąd aplikacji</h1> <br/>";
+    echo "Problem z aplikacją. <br/> Proszę sprubować za chwilę.";
+} catch(AppException $e) {
+    echo "<h1>Wystąpił błąd aplikacji </h1> <br/>";
+    echo '<h3>'. $e->getMessage() .'</h3>';
+} catch(Throwable $e) {
+    echo "<h1>Wystąpił błąd aplikacji </h1> <br/>";
+    //echo $e->getMessage();
 }
 
 
-$view->render($page, $viewParams);
 
 
-//dump($view);
+
+
+
 

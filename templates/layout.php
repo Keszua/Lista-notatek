@@ -10,7 +10,6 @@
 <body class="body">
     <div class="wrapper">
         <div class="header">
-            Nagłówek
             <h1><i class="far fa-clipboard"></i>Moje notatki</h1>
         </div>
 
