@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App;
 
 require_once("src/Utils/debug.php");
-require_once("src/NoteController.php");
+require_once("src/Controller/NoteController.php");
 require_once("src/Request.php");
 //require_once("src/Exception/AppException.php");
 
