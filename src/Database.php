@@ -92,10 +92,18 @@ class Database
 
             $this->conn->exec($query);
         } catch (Throwable $e) {
-            throw StorageException('Nie udało się edytować notatki!', 400);
+            throw new StorageException('Nie udało się edytować notatki!', 400);
         }
+    }
 
-
+    public function deleteNote(int $id): void
+    {
+        try {
+            $query = "DELETE FROM notes WHERE id = $id LIMIT 1";
+            $this->conn->exec($query);
+        } catch (Throwable $e) {
+            throw new StorageException('Nie udało się usunąć notatki!', 400);
+        }
     }
 
     private function createConn(array $config): void

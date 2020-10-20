@@ -25,8 +25,11 @@
                         case 'created':
                             echo 'Notatka została utworzona';
                             break;
-                        case 'edit':
+                        case 'edited':
                             echo 'Notatka została zaktualizowana';
+                            break;
+                        case 'deleted':
+                            echo 'Notatka została usunięta';
                             break;
                         default:
                             break;
@@ -59,6 +62,9 @@
                             <td>
                                 <a href="/?action=show&id=<?= $note['id'] ?>">
                                     <button>Pokaż</button>
+                                </a>
+                                <a href="/?action=delete&id=<?= $note['id'] ?>">
+                                    <button>X</button>
                                 </a>
                             </td>
                         </tr>
