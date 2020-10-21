@@ -14,8 +14,8 @@
 
         <form method="POST" action="/?action=delete">
             <input type="hidden" name="id" value="<?= $note['id'] ?>" />
-            <!-- <button>Usuń</button> -->
-            <input type="submit" value="Usuń"/>
+            <button>Usuń</button>
+            <!-- <input type="submit" value="Usuń"/> -->
             
 
         </form>

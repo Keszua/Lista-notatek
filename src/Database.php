@@ -48,10 +48,23 @@ class Database
         return $note;
     }
 
-    public function getNotes(): array 
+    public function getNotes(string $sortBy, string $sortOrder): array 
     {
         try {
-            $query = "SELECT id, title, description, created FROM notes";
+            if(!in_array($sortBy, ['created', 'title'])) { //funkcja sprawdza, czy w daje tablicy znajdują się wypisane elementy
+                $sortBy = 'title';
+            }
+
+            if(!in_array($sortOrder, ['asc', 'desc'])) {
+                $sortOrder = 'desc';
+            }
+
+            $query = "
+              SELECT id, title, description, created 
+              FROM notes
+              ORDER BY $sortBy $sortOrder
+              LIMIT 5 OFFSET 5
+            ";
             $result = $this->conn->query($query, PDO::FETCH_ASSOC);
             return $result->fetchAll();
         } catch (Throwable $e) {
