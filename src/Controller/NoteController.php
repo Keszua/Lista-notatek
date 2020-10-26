@@ -9,7 +9,8 @@ use App\Request;
 
 class NoteController extends AbstractController
 {
-    
+    private const PAGE_SIZE = 5;
+
     public function createAction(): void
     {
         if($this->request->hasPost()) {
@@ -33,14 +34,28 @@ class NoteController extends AbstractController
 
     public function listAction(): void
     {
+        $pageNumber = (int) $this->request->getParam('page', 1);
+        $pageSize = (int) $this->request->getParam('pagesize', self::PAGE_SIZE);
         $sortBy = $this->request->getParam('sortby', 'title');
         $sortOrder = $this->request->getParam('sortorder', 'desc');
+
+        if(!in_array($pageSize, [5, 10, 15, 20])) {
+             $pageSize = self::PAGE_SIZE;
+        }
+
+        $note = $this->db->getNotes($pageNumber, $pageSize, $sortBy, $sortOrder);
+        $notesQuantity = $this->db->getCount();
 
         $this->view->render(
             'list', 
             [
+                'page' => [
+                    'number' => $pageNumber, 
+                    'size' => $pageSize,
+                    'pages' => (int) ceil($notesQuantity/$pageSize)
+                ],
                 'sort' => ['by' => $sortBy, 'order' => $sortOrder],
-                'notes' => $this->db->getNotes($sortBy, $sortOrder),
+                'notes' => $note,
                 'before' => $this->request->getParam('before'),
                 'error' => $this->request->getParam('error'),
             ]
