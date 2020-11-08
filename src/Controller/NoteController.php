@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Exception\ConfigurationException;
-use App\Exception\NotFoundException;
 use App\Request;
 
 class NoteController extends AbstractController
@@ -111,14 +109,7 @@ class NoteController extends AbstractController
             $this->redirect('/', ['error' => 'missingNoteId']);
         }
         
-        try {
-            $note = $this->db->getNote($noteId);
-        } catch (NotFoundException $e) {
-            //Gdy notatka nie istnieje, to przekieruj na stronę główną z flagą błędu
-            $this->redirect('/', ['error' => 'noteNotFound']);
-        }
-
-        return $note;
+        return $this->db->getNote($noteId);
     }
 
 }

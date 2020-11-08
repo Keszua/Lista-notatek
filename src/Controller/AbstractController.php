@@ -7,9 +7,11 @@ namespace App\Controller;
 use App\Database;
 use App\Request;
 use App\View;
-;
 
 use App\Exception\ConfigurationException;
+use App\Exception\NotFoundException;
+use App\Exception\StorageException;
+
 
 abstract class AbstractController 
 {
@@ -41,18 +43,33 @@ abstract class AbstractController
 
     final public function run() : void
     {
-        // switch($this->action()) {
-        //     case 'create':  $this->createAction();  break;
-        //     case 'show':    $this->showAction();    break;
-        //     default:        $this->listAction();    break;
-        // }
-        
-        $action = $this->action() . 'Action';
-        if(!method_exists($this, $action)) {
-            $action = self::DEFAULT_ACTION . 'Action';
+        try {
+            // switch($this->action()) {
+            //     case 'create':  $this->createAction();  break;
+            //     case 'show':    $this->showAction();    break;
+            //     default:        $this->listAction();    break;
+            // }
+            
+            $action = $this->action() . 'Action';
+            if(!method_exists($this, $action)) {
+                $action = self::DEFAULT_ACTION . 'Action';
+            }
+             
+            $this->$action();  //zamiast switcha. Wywołanie metody o takiej samej nazwie
+        } catch (StorageException $e) {
+            //Log::error($e->getPrevios());
+            $this->view->render(
+                'error',
+                ['message' => $e->getMessage()]
+            );
+        } catch (NotFoundException $e) {
+            //Gdy notatka nie istnieje, to przekieruj na stronę główną z flagą błędu
+            $this->redirect('/', ['error' => 'noteNotFound']);
         }
 
-        $this->$action();  //zamiast switcha. Wywołanie metody o takiej samej nazwie
+
+
+
     }
 
 
